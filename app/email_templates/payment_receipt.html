@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Receipt - TODOenBALANCE</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4A90E2;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 0 0 5px 5px;
+        }
+        .payment-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4A90E2;
+        }
+        .appointment-details {
+            background-color: #f0f9ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #4A90E2;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .social-links {
+            margin: 15px 0;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .receipt-table th, .receipt-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .receipt-table th {
+            background-color: #f5f5f5;
+        }
+        .total-row {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Payment Receipt</h1>
+            <p>Thank you for your payment!</p>
+        </div>
+
+        <div class="content">
+            <p>Hello {{ name }},</p>
+
+            <p>We've received your payment for the nutrition consultation appointment. Your appointment is now confirmed!</p>
+
+            <div class="payment-details">
+                <h3>Payment Information</h3>
+                <table class="receipt-table">
+                    <tr>
+                        <th>Receipt #</th>
+                        <td>{{ payment.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date</th>
+                        <td>{{ payment.completed_at.strftime('%B %d, %Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Method</th>
+                        <td>{{ payment.method|capitalize }}</td>
+                    </tr>
+                    <tr>
+                        <th>Amount</th>
+                        <td>{{ "%.2f"|format(payment.amount) }} {{ payment.currency|upper }}</td>
+                    </tr>
+                    <tr class="total-row">
+                        <th>Total</th>
+                        <td>{{ "%.2f"|format(payment.amount) }} {{ payment.currency|upper }}</td>
+                    </tr>
+                </table>
+
+                {% if payment.receipt_url %}
+                <p>
+                    <a href="{{ payment.receipt_url }}" target="_blank">View Online Receipt</a>
+                </p>
+                {% endif %}
+            </div>
+
+            <div class="appointment-details">
+                <h3>Appointment Details</h3>
+                <p><strong>Date:</strong> {{ payment.appointment.start_time.strftime('%A, %B %d, %Y') }}</p>
+                <p><strong>Time:</strong> {{ payment.appointment.start_time.strftime('%I:%M %p') }}</p>
+                <p><strong>Duration:</strong> {{ payment.appointment.duration }} minutes</p>
+                <p><strong>Type:</strong> {{ payment.appointment.type }}</p>
+            </div>
+
+            <p>If you have any questions about your payment or appointment, please contact us at <a href="mailto:support@todoenbalance.com">support@todoenbalance.com</a>.</p>
+
+            <p style="text-align: center;">
+                <a href="{{ site_url }}/appointments" class="cta-button">View My Appointments</a>
+            </p>
+
+            <p>We look forward to your upcoming session!</p>
+
+            <p>Warm regards,<br>
+            Paola Michelle<br>
+            TODOenBALANCE</p>
+        </div>
+
+        <div class="footer">
+            <p>TODOenBALANCE - Your path to nutritional balance by Paola Michelle</p>
+            <div class="social-links">
+                <a href="https://instagram.com/todoenbalance">Instagram</a> |
+                <a href="https://facebook.com/todoenbalance">Facebook</a> |
+                <a href="https://twitter.com/todoenbalance">Twitter</a>
+            </div>
+            <p>&copy; {{ payment.completed_at.year }} TODOenBALANCE. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

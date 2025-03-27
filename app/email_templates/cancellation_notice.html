@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Cancellation - TODOenBALANCE</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f45b5b;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 0 0 5px 5px;
+        }
+        .appointment-details {
+            background-color: #f9f9f9;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            border-left: 4px solid #f45b5b;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #4A90E2;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .social-links {
+            margin: 15px 0;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .rebook-section {
+            background-color: #f0f9ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Appointment Cancellation</h1>
+            <p>Your nutrition consultation has been cancelled</p>
+        </div>
+
+        <div class="content">
+            <p>Hello {{ name }},</p>
+
+            <p>This email confirms that the following appointment has been cancelled:</p>
+
+            <div class="appointment-details">
+                <p><strong>Date:</strong> {{ appointment.start_time.strftime('%A, %B %d, %Y') }}</p>
+                <p><strong>Time:</strong> {{ appointment.start_time.strftime('%I:%M %p') }}</p>
+                <p><strong>Duration:</strong> {{ appointment.duration }} minutes</p>
+                <p><strong>Type:</strong> {{ appointment.type }}</p>
+                <p><strong>Appointment ID:</strong> #{{ appointment.id }}</p>
+            </div>
+
+            {% if appointment.cancelled_by_admin %}
+            <p>This appointment was cancelled by the administrator. If you have any questions about this cancellation, please contact us.</p>
+            {% else %}
+            <p>As requested, your appointment has been cancelled successfully.</p>
+            {% endif %}
+
+            {% if appointment.is_paid %}
+            <p>A refund for your payment will be processed within 3-5 business days, in accordance with our refund policy.</p>
+            {% endif %}
+
+            <div class="rebook-section">
+                <h3>Would you like to reschedule?</h3>
+                <p>If you'd like to book a new appointment, please click the button below:</p>
+                <p>
+                    <a href="{{ site_url }}/booking" class="cta-button">Book New Appointment</a>
+                </p>
+            </div>
+
+            <p>If you have any questions or concerns, please contact us at <a href="mailto:support@todoenbalance.com">support@todoenbalance.com</a>.</p>
+
+            <p>Warm regards,<br>
+            Paola Michelle<br>
+            TODOenBALANCE</p>
+        </div>
+
+        <div class="footer">
+            <p>TODOenBALANCE - Your path to nutritional balance by Paola Michelle</p>
+            <div class="social-links">
+                <a href="https://instagram.com/todoenbalance">Instagram</a> |
+                <a href="https://facebook.com/todoenbalance">Facebook</a> |
+                <a href="https://twitter.com/todoenbalance">Twitter</a>
+            </div>
+            <p>&copy; {{ appointment.start_time.year }} TODOenBALANCE. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

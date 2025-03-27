@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: todoenbalance-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+      - ./data:/app/data
+    environment:
+      - SECRET_KEY=changethisinsecretkey
+      - SERVER_HOST=http://localhost:8000
+      - BACKEND_CORS_ORIGINS=["http://localhost:3000"]
+      - SQLITE_DATABASE_URI=sqlite:///./data/app.db
+      - EMAILS_ENABLED=False
+      # - SENDGRID_API_KEY=your-sendgrid-api-key
+      # - EMAILS_FROM_EMAIL=your-email@example.com
+      # - EMAILS_FROM_NAME=TODOenBALANCE
+      # - STRIPE_API_KEY=your-stripe-api-key
+      # - STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+      # - PAYPAL_CLIENT_ID=your-paypal-client-id
+      # - PAYPAL_CLIENT_SECRET=your-paypal-client-secret
+      # - PAYPAL_WEBHOOK_ID=your-paypal-webhook-id
+      # - ADMIN_EMAIL=admin@example.com
+      # - ADMIN_PASSWORD=strong-password
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
+
+  # Uncomment to add a frontend service if needed
+  # frontend:
+  #   image: node:16-alpine
+  #   container_name: todoenbalance-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ../frontend:/app
+  #   working_dir: /app
+  #   command: npm start
+
+volumes:
+  data:
